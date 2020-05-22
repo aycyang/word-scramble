@@ -1,0 +1,32 @@
+<head>
+  <title>word scramble</title>
+</head>
+<body>
+	<textarea id="textbox" placeholder="type in a list of words here..."></textarea>
+	<br>
+	<button id="scramble-button" onclick="scramble()">scramble!</button>
+	<script>
+	function scramble() {
+    var textboxElement = document.getElementById("textbox");
+
+    var text = textboxElement.value;
+    textboxElement.value = '';
+
+		var wordList = [text];
+		wordList = wordList.flatMap(word => word.split(' '));
+		wordList = wordList.flatMap(word => word.split(','));
+		wordList = wordList.flatMap(word => word.split('\n'));
+
+    for (var word of wordList) {
+			if (word === '') continue;
+			document.body.appendChild(createWordElement(word));
+		}
+	}
+  function createWordElement(word) {
+		var element = document.createElement('div');
+		element.innerHTML = word;
+		return element;
+	}
+	</script>
+	<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+</body>
