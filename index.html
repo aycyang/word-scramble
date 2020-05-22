@@ -1,44 +1,51 @@
-<head>
-  <title>word scramble</title>
-	<style>
-	  .word {
-			border: 1px solid black;
-			background-color: white;
-			padding: 2px 8px;
-			display: inline;
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>word scramble</title>
+		<style>
+			.word {
+				border: 1px solid black;
+				background-color: white;
+				padding: 2px 8px;
+				display: inline;
+			}
+		</style>
+	</head>
+	<body>
+		<textarea id="textbox" placeholder="type in a list of words here..."></textarea>
+		<br>
+		<button id="scramble-button" onclick="scramble()">scramble!</button>
+		<br>
+		<script>
+		function scramble() {
+			var textboxElement = document.getElementById("textbox");
+
+			var text = textboxElement.value;
+			textboxElement.value = '';
+
+			var wordList = [text];
+			wordList = wordList.flatMap(word => word.split(' '));
+			wordList = wordList.flatMap(word => word.split(','));
+			wordList = wordList.flatMap(word => word.split('\n'));
+
+			for (var word of wordList) {
+				if (word === '') continue;
+				document.body.appendChild(createWordElement(word));
+			}
+			$('.word').each((i, element) => {
+				$(element).css({top: (Math.random() * 90) + '%', left: (Math.random() * 80) + '%'});
+			});
 		}
-	</style>
-</head>
-<body>
-	<textarea id="textbox" placeholder="type in a list of words here..."></textarea>
-	<br>
-	<button id="scramble-button" onclick="scramble()">scramble!</button>
-	<br>
-	<script>
-	function scramble() {
-    var textboxElement = document.getElementById("textbox");
-
-    var text = textboxElement.value;
-    textboxElement.value = '';
-
-		var wordList = [text];
-		wordList = wordList.flatMap(word => word.split(' '));
-		wordList = wordList.flatMap(word => word.split(','));
-		wordList = wordList.flatMap(word => word.split('\n'));
-
-    for (var word of wordList) {
-			if (word === '') continue;
-			document.body.appendChild(createWordElement(word));
+		function createWordElement(word) {
+			var element = document.createElement('div');
+			element.innerHTML = word;
+			element.classList.add('word');
+			$(element).draggable();
+			$(element).css({position: 'absolute'});
+			return element;
 		}
-	}
-  function createWordElement(word) {
-		var element = document.createElement('div');
-		element.innerHTML = word;
-		element.classList.add('word');
-		$(element).draggable();
-		return element;
-	}
-	</script>
-	<script src="jquery-3.5.1.min.js"></script>
-	<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
-</body>
+		</script>
+		<script src="jquery-3.5.1.min.js"></script>
+		<script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+	</body>
+</html>
